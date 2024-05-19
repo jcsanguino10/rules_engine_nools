@@ -1,0 +1,468 @@
+// Define the SistemaLogico class
+define SistemaLogico {
+    estado: null,
+    mensaje: null,
+    opciones: [],
+    getEstado: function() {
+        return this.estado;
+    },
+    setMensaje: function(mensaje) {
+        this.mensaje = mensaje;
+    },
+    setOpciones: function(opciones) {
+        this.opciones = opciones;
+    }
+}
+
+// Rule: Antes de iniciar el viaje
+rule "Antes de iniciar el viaje" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Inicio";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Bienvenido a la sección de antes de iniciar tu viaje, selecciona una de las opciones con las que puedo ayudarte...";
+            this.opciones = ["Inicio de sesión", "Verificación de misiones (o Tareas)"];
+        });
+    }
+}
+
+
+// Rule: Inicio de sesión
+rule "Inicio de sesión" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Inicio de sesion";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Qué problema estás teniendo con el inicio de sesión?";
+            this.opciones = ["No puedo iniciar sesión con mi cuenta"];
+        });
+    }
+}
+
+// Rule: No puedo iniciar sesión con mi cuenta
+rule "No puedo iniciar sesión con mi cuenta" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Credenciales son tu correo electronico";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Recuerda que tus credenciales son tu correo electrónico (completamente en minúsculas) para el usuario y tu contraseña es tu número de cédula. En caso de que estas credenciales no estén funcionando, por favor remitete a tu operador logístico para completar el proceso de activación de tu cuenta.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Verificación de misiones (o Tareas)
+rule "Verificación de misiones (o Tareas)" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Verificacion de misiones (o Tareas)";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Qué problema estás teniendo con la verificación de misiones?";
+            this.opciones = ["No puedo ver mis misiones", "Mis misiones no coinciden con las que tengo en físico"];
+        });
+    }
+}
+
+// Rule: No puedo ver mis misiones
+rule "No puedo ver mis misiones" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "No puedo ver mis misiones";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "En caso de no ver ninguna misión inmediatamente, primero diríjase a la sección de misiones que existe en la aplicación. Si ya estando en esta sección, no cuenta con las misiones asignadas, lo más probable es que su cuenta de GO tenga un problema de vinculación, por lo que debe comunicarse lo más pronto posible con su operador logístico.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Mis misiones no coinciden con las que tengo en físico
+rule "Mis misiones no coinciden con las que tengo en físico" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Mis misiones no coinciden con las que tengo en fisico";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "En caso de que las misiones que tienes en la aplicación no coincidan con las que tienes en el manifiesto entregado, inicialmente trata de salir de la aplicación y volver a ingresar en caso de que no se hayan actualizado correctamente. Si esto no funciona por favor comunícate con tu operador logístico ANTES DE INICIAR CUALQUIER VIAJE, para que puedan verificar la información y corregir cualquier error que pueda existir.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Sección de registro de eventualidades
+rule "Ayuda al registrar una eventualidad" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Inicio 2";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Bienvenido a la sección de registro de eventualidades, por favor seleccione la etapa del proceso en la que se encuentra actualmente para asesorarlo correctamente...";
+            this.opciones = ["Comienzo de viaje (En camino)", "Descargue", "Recaudo", "Viaje terminado"];
+        });
+    }
+}
+
+// Sección de comienzo de viaje
+rule "Comienzo de viaje (En camino)" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Comienzo de viaje (En camino)";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Qué problema estás teniendo en tu viaje?";
+            this.opciones = ["La ruta propuesta no es óptima", "Se presentó un problema en la vía", "El cliente no se encuentra en el punto", "Entregas simultáneas", "Las misiones no están bien priorizadas"];
+        });
+    }
+}
+
+// La ruta propuesta no es optima
+rule "La ruta propuesta no es optima" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "La ruta propuesta no es optima";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Puedes cambiar el orden de la ruta propuesta en GO según tus preferencias. Recuerda no cambiar la última misión.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Se presento un problema en la via
+rule "Se presento un problema en la via" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Se presento un problema en la via";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Dentro de la aplicación de GO, en el menú opciones, encontrará las diferentes situaciones que se pueden presentar en la vía. Seleccione la más acorde a su situación actual.";
+            this.opciones = [];
+        });
+    }
+}
+
+// El cliente no se encuentra en el punto
+rule "El cliente no se encuentra en el punto" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "El cliente no se encuentra en el punto";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente no se encuentra en el punto de entrega: \n";
+            this.mensaje += "1. Tome una foto del lugar de entrega \n";
+            this.mensaje += "2. Dentro de la aplicación de GO cancele la misión y en observación coloque la hora en la que visitó el sitio junto con la foto \n";
+            this.mensaje += "Nota: Recuerde que puede adjuntar la imagen por medio de la opción de galería \n";
+            this.opciones = [];
+        });
+    }
+}
+
+// Entregas simultaneas
+rule "Entregas simultaneas" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Entregas simultaneas";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si desea realizar entregas simultáneas y se encuentra en un sector seguro... \n";
+            this.mensaje += "Debe iniciar los viajes que desee realizar en simultáneo y tener en cuenta que debe registrar siempre correctamente los tiempos de entrega de cada una de las misiones.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Las misiones no están bien priorizadas
+rule "Las misiones no están bien priorizadas" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Las misiones no estan bien priorizadas";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si alguna misión tiene un tiempo de vencimiento próximo y no está priorizada, pero ya tiene un viaje en curso entonces...";
+            this.mensaje += "1. Debe cancelar el viaje actual dejando como observación que se cancela por priorizar otra misión. \n";
+            this.mensaje += "2. Inicie el viaje que necesita priorizar y continúe con normalidad. \n";
+            this.mensaje += "3. Una vez retome el viaje cancelado, recuerde que no debe editar los tiempos registrados por GO. \n";
+            this.opciones = [];
+        });
+    }
+}
+
+// Sección de Descargue
+rule "Descargue" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Descargue";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Qué problema estás teniendo en el descargue?";
+            this.opciones = ["El cliente quiere realizar una devolución parcial", "El cliente quiere realizar una devolución total", "La cantidad de producto no concuerda con lo que pidió el cliente"];
+        });
+    }
+}
+
+
+// El cliente quiere realizar una devolución parcial
+rule "El cliente quiere realizar una devolución parcial" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "El cliente quiere realizar una devolucion parcial";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente quiere realizar una devolución parcial, por favor siga los siguientes pasos:";
+            this.mensaje += "1. Dentro de la aplicación de GO, dentro de la misión actual, seleccione la opción de devolución. \n";
+            this.mensaje += "2. Identifique el producto que el cliente desea devolver y seleccione la cantidad. Recuerde que está en kilogramos. \n";
+            this.mensaje += "3. Tome una foto de la factura firmada por el cliente con la novedad que presenta el producto. Adjúntela en la aplicación en la opción agregar imagen. \n";
+            this.mensaje += "4. Si el proveedor lo solicita, puede realizar otra misión a un nuevo cliente con la mercancía devuelta. En cuyo caso debe dejar la observación con los datos del nuevo cliente y si desea una foto del producto devuelto. \n";
+            this.opciones = [];
+        });
+    }
+}
+
+// El cliente quiere realizar una devolución total
+rule "El cliente quiere realizar una devolución total" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "El cliente quiere realizar una devolucion total";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente quiere realizar una devolución total, por favor siga los siguientes pasos:";
+            this.mensaje += "1. Dentro de la aplicación de GO, dentro de la misión actual, seleccione la opción de devolución.";
+            this.mensaje += "2. Seleccione producto por producto indicando la cantidad a devolver (toda la cantidad registrada en la misión).";
+            this.mensaje += "3. Tome una foto de la factura firmada por el cliente con la novedad que presenta el producto. Adjúntela en la aplicación en la opción agregar imagen.";
+            this.mensaje += "4. Si el proveedor lo solicita, puede realizar otra misión a un nuevo cliente con la mercancía devuelta. En cuyo caso debe dejar la observación con los datos del nuevo cliente y si desea una foto del producto devuelto.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: La cantidad de producto no concuerda con lo que pidio el cliente
+rule "La cantidad de producto no concuerda con lo que pidio el cliente" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "La cantidad de producto no concuerda con lo que pidio el cliente";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si la cantidad de producto no concuerda con lo que pidio el cliente, por favor siga los siguientes pasos:\n" +
+                           "1. Dentro de la aplicación de GO, dentro de la misión actual. Seleccione la opción de merma.\n" +
+                           "2. Seleccione producto que presenta merma indicando la cantidad (Recuerde que las unidades estan en Kilogramos).\n" +
+                           "3. Tome una foto de la planilla de mermas firmada por el cliente. Adjuntela en la aplicación en la opción agregar imagen.\n" +
+                           "4. Realice un comentario en la opción de observación indicando el motivo de la merma.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Recaudo
+rule "Recaudo" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Recaudo";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Qué problema estás teniendo en el recaudo?";
+            this.opciones = ["Cambio de método de pago", "Pago con crédito de MacPollo", "Soporte pago en línea", "Vueltas en pagos en efectivo", "El cliente no puede pagar la factuta (Efectivo)", "El cliente es un punto MacPollo"];
+        });
+    }
+}
+
+// Rule: Cambio de método de pago
+rule "Cambio de método de pago" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Cambio de metodo de pago";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente desea cambiar el método de pago, por favor siga los siguientes pasos:\n" +
+                           "1. Cambie el método de pago manualmente al seleccionado por el cliente y proceda con normalidad.\n" +
+                           "2. Debe dejar como aclaración en las observaciones que se hizo un cambio en el método de pago.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Pago con crédito de MacPollo
+rule "Pago con crédito de MacPollo" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Pago con credito de MacPollo";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente desea pagar con crédito MacPollo, por favor siga los siguientes pasos:\n" +
+                           "1. Debe tomar evidencia del crédito MacPollo (fotografía) con la firma del cliente.\n" +
+                           "2. Se debe seleccionar como método de pago la consignación y en observaciones colocar la aclaración de que se hizo con un crédito de MacPollo.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Soporte pago en línea
+rule "Soporte pago en línea" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Soporte pago en linea";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente desea soporte para el pago en línea, por favor siga los siguientes pasos:\n" +
+                           "1. En la aplicación GO seleccione la forma de pago 'Pago en línea'\n" +
+                           "2. Tome evidencia (foto) de la factura emitida por avidesa.\n" +
+                           "3. Adjunte la evidencia en formato de fotografía en la aplicación GO y continúe con el flujo.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Vueltas en pagos en efectivo
+rule "Vueltas en pagos en efectivo" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Vueltas en pagos en efectivo";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente desea vueltas en pagos en efectivo, por favor siga los siguientes pasos:\n" +
+                           "1. Revise si el valor calculado se puede dar en moneda colombiana. En caso positivo entregue este dinero y continúe.\n" +
+                           "2. En caso contrario, revise si el valor viable se encuentra por encima o por debajo del calculado por GO. En cada caso determine cual es la mejor manera de redondear.\n" +
+                           "3. Dependiendo de la situación, se verá reflejado un saldo positivo o negativo en la aplicación, no se preocupe por esto pues no afectará la correcta operación de los viajes.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: El cliente no puede pagar la factura (Efectivo)
+rule "El cliente no puede pagar la factura (Efectivo)" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "El cliente no puede pagar la factura (Efectivo)";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente no puede pagar la factura en efectivo, por favor siga los siguientes pasos:\n" +
+                           "1. Contáctese con el operador logístico y consulte por autorización de dejar o no el producto sin recibir dinero.\n" +
+                           "2. En caso de autorización se debe colocar en el recaudo un valor de 0 y en observaciones consignar el nombre y apellido del comercial que autorizó dejar el producto sin recibir dinero, además de añadir la hora en que se debe regresar por el dinero.\n" +
+                           "3. En caso de no autorización se debe marcar como devolución total.\n" +
+                           "Nota: En caso de que se autorice una consignación, se debe realizar el proceso normal pero se debe dejar como observación el nombre y apellido de la persona que autorizó la consignación.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: El cliente es un punto MacPollo
+rule "El cliente es un punto MacPollo" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "El cliente es un punto MacPollo";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si el cliente es un punto MacPollo, por favor siga los siguientes pasos:\n" +
+                           "1. Dejar el recaudo en 0.\n"+
+			   "2. Seleccionar la opción de medio de pago no definido.\n" +
+                           "3. Adjuntar evidencia fotográfica del punto MacPollo al que se le realizó la entrega.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Viaje terminado
+rule "Viaje terminado" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Viaje terminado";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Desde la aplicación de GO no es posible realizar cambios a los viajes ya terminados, por lo que en caso de necesitar realizar una modificación ha de contactarse directamente con su operador logístico.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Otros Inconvenientes
+rule "Otros Inconvenientes" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Inicio 3";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Bienvenido a la sección de otros inconvenientes, por favor seleccione el tipo de inconveniente que está presentando...\n" +
+                           "1. Problemas de consignación para el cierre del día\n" +
+                           "2. Error en consignación registrada";
+            this.opciones = ["Problemas de consignacion para el cierre del dia","Error en consignacion registrada"];
+        });
+    }
+}
+
+// Rule: Problemas de consignación para el cierre del día
+rule "Problemas de consignación para el cierre del día" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Problemas de consignacion para el cierre del dia";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si tienes problemas con la consignación para el cierre del día, por favor tenga en cuenta lo siguiente:\n" +
+                           "Si no puede realizar la consignación por cierre del banco, registre la consignación nueva en GO pero declare en las observaciones que no se pudo realizar la consignación por cierre del banco, aclarando a qué hora terminó su último viaje.\n" +
+                           "Si fue autorizado a dejar el dinero en un buzón o depósito de mac pollo debe adjuntar la foto del buzón y dejar el comentario respectivo con la hora en que realizó el proceso.";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: Error en consignación registrada
+rule "Error en consignación registrada" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Error en consignacion registrada";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Si tienes problemas con la consignación registrada (por ejemplo el valor quedo mal registrado), realice los siguientes pasos:\n" +
+                           "1. En el menú inferior seleccione la opción de consignaciones\n" +
+                           "2. Identifique la consignación con el error y elimínela\n" +
+                           "3. Registre nuevamente la consignación con el valor correcto";
+            this.opciones = [];
+        });
+    }
+}
+
+// Rule: No reconocidas
+rule "Inconvenientes no reconocidos" {
+    when {
+        sistemaLogico: SistemaLogico sistemaLogico.estado == "Inicio 4";
+    }
+    then {
+        modify(sistemaLogico, function() {
+            this.estado = "";
+            this.mensaje = "Bienvenido a la sección de inconvenientes no reconocidos, a continuación encontraras el acceso a la guia de GO donde podrás conocer más del funcionamiento del sitio. Adicionalmente, te damos la oportunidad de registrar tu incidente para mapearlo" +
+                           "1. Link documentación GO: https://drive.google.com/file/d/1SqHyE31gahnEse7aQ-aeKgShwiMp1tAx/view?usp=sharing \n" +
+                           "2. Link drive: https://drive.google.com/file/d/1SqHyE31gahnEse7aQ-aeKgShwiMp1tAx/view?usp=sharing, registra tu incidente";
+            this.opciones = [];
+        });
+    }
+}
