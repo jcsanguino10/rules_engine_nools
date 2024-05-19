@@ -1,6 +1,6 @@
 # Back-end for rule-engine using node js and nools
 
-A nice project with a nice description
+This project is part of the back-end building with the aim of process rules using nools as rules-engine.
 
 ---
 ## Requirements
