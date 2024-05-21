@@ -460,8 +460,8 @@ rule "Inconvenientes no reconocidos" {
         modify(sistemaLogico, function() {
             this.estado = "";
             this.mensaje = "Bienvenido a la sección de inconvenientes no reconocidos, a continuación encontraras el acceso a la guia de GO donde podrás conocer más del funcionamiento del sitio. Adicionalmente, te damos la oportunidad de registrar tu incidente para mapearlo" +
-                           "1. Link documentación GO: https://drive.google.com/file/d/1SqHyE31gahnEse7aQ-aeKgShwiMp1tAx/view?usp=sharing \n" +
-                           "2. Link drive: https://drive.google.com/file/d/1SqHyE31gahnEse7aQ-aeKgShwiMp1tAx/view?usp=sharing, registra tu incidente";
+                           "1. Link documentación GO: \n" +
+                           "2. Link drive:, registra tu incidente";
             this.opciones = [];
         });
     }
