@@ -19,6 +19,8 @@ app.post('/question', (req, res) => {
     let session = flow.getSession();
 
     let sistemaLogico = new SistemaLogico();
+
+    console.log(req.body.question)
     sistemaLogico.estado =req.body.question;
 
     // Insert the fact into the session
